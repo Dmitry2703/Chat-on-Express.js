@@ -6,10 +6,12 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.21.2",
+    "debug": "^2.6.8",
     "ejs": "*",
     "eslint": "^3.13.1",
     "eslint-config-airbnb-base": "^11.0.1",
-    "eslint-plugin-import": "^2.2.0"
+    "eslint-plugin-import": "^2.2.0",
+    "express": "3.21.2",
+    "nconf": "^0.8.4"
   }
 }

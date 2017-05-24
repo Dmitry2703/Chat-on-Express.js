@@ -1,37 +1,37 @@
-
-/**
- * Module dependencies.
- */
-
 const express = require('express');
-const routes = require('./routes');
-const user = require('./routes/user');
 const http = require('http');
 const path = require('path');
+const debug = require('debug')('app');
+const config = require('./config');
 
 const app = express();
-
-// all environments
-app.set('port', process.env.PORT || 3000);
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-app.use(express.favicon());
-app.use(express.logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded());
-app.use(express.methodOverride());
-app.use(express.session({ secret: 'your secret here' }));
-app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
-
-// development only
-if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
-}
-
-app.get('/', routes.index);
-app.get('/users', user.list);
+app.set('port', config.get('port'));
 
 http.createServer(app).listen(app.get('port'), () => {
-  console.log('Express server listening on port ' + app.get('port'));
+  debug('Express server listening on port ' + config.get('port'));
+});
+
+app.use((req, res, next) => {
+  if (req.url === '/') {
+    res.end('Hello!')
+  } else {
+    next();
+  }
+});
+
+app.use((req, res, next) => {
+  if (req.url === '/forbidden') {
+    next(new Error('wops, access denied!'));
+  } else {
+    next();
+  }
+});
+
+app.use((err, req, res, next) => {
+  if (app.get('env') === 'development') {
+    const errorHandler = express.errorHandler();
+    errorHandler(err, req, res, next)
+  } else {
+    res.send(500);
+  }
 });
