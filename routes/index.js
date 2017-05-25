@@ -1,8 +1,23 @@
+const User = require('../models/user').User;
+const HttpError = require('../error').HttpError;
 
-/*
- * GET home page.
- */
+module.exports = function(app) {
+  app.get('/', (req, res) => res.render('index'));
 
-exports.index = (req, res) => {
-  res.render('index', { title: 'Express' });
+  app.get('/users', (req, res, next) => {
+    User.find({}, (err, users) => {
+      if (err) return next(err);
+      res.json(users);
+    });
+  });
+
+  app.get('/user/:id', (req, res, next) => {
+    User.findById(req.params.id, (err, user) => {
+      if (err) next(err);
+      if (!user) {
+        next(new HttpError(404, 'User not found'));
+      }
+      res.json(user);
+    });
+  });
 };
