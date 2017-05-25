@@ -6,6 +6,7 @@
     "start": "supervisor app.js"
   },
   "dependencies": {
+    "async": "^2.4.1",
     "bootstrap": "^3.3.7",
     "debug": "^2.6.8",
     "ejs": "*",
@@ -15,6 +16,7 @@
     "eslint-plugin-import": "^2.2.0",
     "express": "3.21.2",
     "jquery": "^3.2.1",
+    "mongoose": "^4.10.2",
     "nconf": "^0.8.4"
   }
 }
